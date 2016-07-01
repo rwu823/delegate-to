@@ -25,7 +25,7 @@ function delegate (selector, dispatchEvent) {
 
     if (target) {
       ev.delegateTarget = target
-      dispatchEvent(ev)
+      dispatchEvent.bind(this)(ev)
     }
   }
 }

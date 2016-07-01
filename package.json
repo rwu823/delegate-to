@@ -1,6 +1,6 @@
 {
   "name": "delegate-to",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "DOM Event delegate",
   "main": "dist/delegate-to.min.js",
   "scripts": {
