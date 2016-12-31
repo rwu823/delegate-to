@@ -2,14 +2,16 @@
 
 const webpack = require('webpack')
 const pkg = require('./package.json')
-const isDev = process.env.NODE_ENV !== 'production'
+const { NODE_ENV } = process.env
+const isDev = !NODE_ENV
+const isProd = NODE_ENV === 'production'
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: {
     [pkg.name]: isDev
-      ? ['babel-polyfill', './dev/client.js']
-      : ['./src/index.js'],
+      ? ['./dev/client']
+      : ['./src'],
   },
   output: {
     path: `${__dirname}/npm/dist`,
@@ -21,15 +23,19 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel',
+        loader: 'babel-loader',
       }
     ]
   },
-  plugins: isDev ? [new HtmlWebpackPlugin({
-    title: pkg.name,
-    template: './dev/index.html',
-  })] : [],
+  plugins: [
+    ...isDev ? [
+      new HtmlWebpackPlugin({
+        title: pkg.name,
+        template: './dev/index.html',
+      })
+    ] : [
+    ],
+  ],
   watch: isDev ,
   devtool: isDev ? 'eval' : ''
 }
