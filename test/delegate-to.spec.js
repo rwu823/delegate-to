@@ -1,59 +1,51 @@
-import test from 'ava'
-import jsdom from 'jsdom'
 import delegate from '../src'
 
-function setup() {
-  return new Promise((resolve, reject) => {
-    jsdom.env(`
-<body>
-  <div id="click-me">  
-    <h1 id="h1">Click me</h1>
-    <ul>
-        <li id="li1">item 1</li>
-        <li>item 2</li>
-        <li>item 3</li>
-    </ul>
-  </div>
-</body>`, (er, window) =>{
-        resolve(window)
-      })
-  })
-}
+const win = window
+const click = document.createEvent('HTMLEvents')
+click.initEvent('click', true, false)
 
-let win, click, text
-test.before(async ()=> {
-  win = await setup()
-
-  click = win.document.createEvent('HTMLEvents')
-  click.initEvent('click', true, false)
+beforeEach(() => {
+  document.body.innerHTML = `
+    <div id="click-me">
+      <h1 id="h1">Click me</h1>
+      <ul>
+          <li id="li1">item 1</li>
+          <li>item 2</li>
+          <li>item 3</li>
+      </ul>
+    </div>
+  `
 })
 
-test('delegate li, should output nothing', assert => {
+it('delegate li, should output nothing', () => {
+  let text
   win['click-me'].addEventListener('click', delegate('li', e=> {
     text = e.target.textContent.trim()
   }), false)
 
   win['click-me'].dispatchEvent(click)
-  assert.is(text, undefined)
+  expect(text).toBe(undefined)
 
-  win['h1'].dispatchEvent(click)
-  assert.is(text, undefined)
+  window.h1.dispatchEvent(click)
+  expect(text).toBe(undefined)
 })
 
-test('delegate li, should output `item 1`', assert => {
-  win['click-me'].addEventListener('click', delegate('#li', e=> {
+it('delegate li, should output `item 1`', () => {
+  let text
+  win['click-me'].addEventListener('click', delegate('#li1', e=> {
     text = e.delegateTarget.textContent.trim()
   }), false)
 
   win['li1'].dispatchEvent(click)
-  assert.is(text, 'item 1')
+  expect(text).toBe('item 1')
 })
 
-test('delegate li with custom condition, should output `item 1`', assert => {
+test('delegate li with custom condition, should output `item 1`', () => {
+  let text
   win['click-me'].addEventListener('click', delegate(target => target.id === 'li1', e=> {
     text = e.delegateTarget.textContent.trim()
   }), false)
 
   win['li1'].dispatchEvent(click)
-  assert.is(text, 'item 1')
+  expect(text).toBe('item 1')
 })
