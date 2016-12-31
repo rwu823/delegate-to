@@ -13,11 +13,10 @@
     "event",
     "delegate",
     "delegate-to",
-    "delegate to",
     "to",
     "DOM",
     "match",
-    "matchs"
+    "matches"
   ],
   "author": "Rocky Wu <rocky823@gmail.com>",
   "license": "MIT",
