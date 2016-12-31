@@ -1,32 +1,62 @@
-import gu from 'gulp'
-import rename from 'gulp-rename'
-import uglify from 'gulp-uglify'
 import pkg from '../package.json'
-import del from 'del'
-import webpack from 'webpack'
-import webpackConf from '../webpack.config'
 import fs from 'fs'
+import 'shelljs/global'
 
-del.sync('npm')
-webpack(webpackConf, (er, stats)=> {
-  console.log(stats.toString({
-    colors: true,
-  }))
+import babel from 'rollup-plugin-babel'
+import commonjs from 'rollup-plugin-commonjs'
+import babelrc from 'babelrc-rollup'
+import uglify from 'rollup-plugin-uglify'
 
-  gu.src('npm/dist/*.js')
-    .pipe(uglify())
-    .pipe(rename({
-      suffix: '.min'
-    }))
-    .pipe(gu.dest('npm/dist'))
+const rollup = require('rollup')
 
-  ;(()=> {
-    const {devDependencies, ava, nyc, scripts, ...pkgJSON} = pkg
+import gu from 'gulp'
+import size from 'gulp-size'
 
-    fs.writeFile(`npm/package.json`, JSON.stringify(pkgJSON, null, 2))
-  })()
+rm('-rf', 'npm')
+mkdir('-p', 'npm/dist/')
+cp('-R', 'README.md', 'npm')
+
+rollup.rollup({
+  entry: 'src/index.js',
+  plugins: [
+    babel(babelrc({
+      addExternalHelpersPlugin: false,
+    })),
+    commonjs(),
+  ],
+}).then((bundle) => {
+  const dest = `npm/dist/${pkg.name}.js`
+  bundle.write({
+    dest,
+    format: 'umd',
+    moduleName: 'DelegateTo',
+  })
+
+  return dest
 })
+.then((entry) => {
+  delete pkg.devDependencies
+  delete pkg.scripts
 
-gu.src('README.md')
-  .pipe(gu.dest('npm'))
+  fs.writeFile(`npm/package.json`, JSON.stringify(pkg, null, 2))
 
+  rollup.rollup({
+    entry,
+    plugins: [
+      uglify()
+    ],
+  }).then((bundle) => {
+    bundle.write({
+      dest: `npm/${pkg.main}`,
+      format: 'umd',
+      moduleName: 'DelegateTo',
+    })
+
+    gu.src('npm/**')
+      .pipe(size({
+        pretty: true,
+        showFiles: true,
+        gzip: true,
+      }))
+  })
+})

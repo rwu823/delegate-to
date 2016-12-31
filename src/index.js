@@ -30,5 +30,4 @@ function delegate (selector, dispatchEvent) {
   }
 }
 
-
 module.exports = delegate
