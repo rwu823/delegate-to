@@ -5,12 +5,13 @@ import 'shelljs/global'
 import babel from 'rollup-plugin-babel'
 import commonjs from 'rollup-plugin-commonjs'
 import babelrc from 'babelrc-rollup'
-import uglify from 'rollup-plugin-uglify'
 
 const rollup = require('rollup')
 
 import gu from 'gulp'
 import size from 'gulp-size'
+import uglify from 'gulp-uglify'
+import rename from 'gulp-rename'
 
 rm('-rf', 'npm')
 mkdir('-p', 'npm/dist/')
@@ -34,29 +35,26 @@ rollup.rollup({
 
   return dest
 })
-.then((entry) => {
+.then((src) => {
   delete pkg.devDependencies
   delete pkg.scripts
 
-  fs.writeFile(`npm/package.json`, JSON.stringify(pkg, null, 2))
+  fs.writeFile(`npm/package.json`, JSON.stringify(pkg, null, 2), (err) => {
 
-  rollup.rollup({
-    entry,
-    plugins: [
-      uglify()
-    ],
-  }).then((bundle) => {
-    bundle.write({
-      dest: `npm/${pkg.main}`,
-      format: 'umd',
-      moduleName: 'DelegateTo',
-    })
-
-    gu.src('npm/**')
-      .pipe(size({
-        pretty: true,
-        showFiles: true,
-        gzip: true,
-      }))
   })
+
+  gu.src([src])
+    .pipe(uglify())
+    .pipe(rename({
+      suffix: '.min'
+    }))
+    .pipe(gu.dest('npm/dist'))
+    .on('finish', () => {
+      gu.src('npm/**')
+        .pipe(size({
+          pretty: true,
+            showFiles: true,
+            gzip: true,
+        }))
+    })
 })
