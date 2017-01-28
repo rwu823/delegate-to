@@ -5,9 +5,8 @@
   "main": "dist/delegate-to.min.js",
   "scripts": {
     "dev": "webpack-dev-server --inline --hot",
-    "build": "NODE_ENV=production babel-node ./scripts/build",
-    "test": "jest --coverage",
-    "coveralls": "cat ./coverage/lcov.info | coveralls"
+    "build": "NODE_ENV=production babel-node scripts/build",
+    "test": "jest --coverage"
   },
   "keywords": [
     "event",
@@ -21,23 +20,22 @@
   "author": "Rocky Wu <rocky823@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "babel-cli": "^6.8.0",
+    "babel-cli": "^6.22.2",
     "babel-loader": "^6.2.4",
-    "babel-preset-env": "^1.1.4",
+    "babel-preset-env": "^1.1.8",
     "babelrc-rollup": "^3.0.0",
-    "coveralls": "^2.11.9",
     "gulp": "^3.9.1",
     "gulp-rename": "^1.2.2",
     "gulp-size": "^2.1.0",
-    "gulp-uglify": "^2.0.0",
-    "html-webpack-plugin": "^2.24.1",
+    "gulp-uglify": "^2.0.1",
+    "html-webpack-plugin": "^2.26.0",
     "jest-cli": "^18.1.0",
-    "rollup": "^0.39.2",
+    "rollup": "^0.41.4",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-commonjs": "^7.0.0",
-    "shelljs": "^0.7.5",
-    "webpack": "2.2.0-rc.3",
-    "webpack-dev-server": "2.2.0-rc.0"
+    "shelljs": "^0.7.6",
+    "webpack": "2.2.0",
+    "webpack-dev-server": "2.2.0"
   },
-  "repository": "git@github.com:rwu823/delegate-to.git"
+  "repository": "https://github.com/rwu823/delegate-to.git"
 }
