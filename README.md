@@ -1,4 +1,4 @@
-[![version](https://img.shields.io/npm/v/delegate-to.svg?label=version)](https://www.npmjs.org/package/delegate-to) [![Build Status](https://img.shields.io/travis/rwu823/delegate-to.svg?branch=master)](https://travis-ci.org/rwu823/delegate-to/) [![Coverage](https://img.shields.io/coveralls/rwu823/delegate-to.svg)](https://coveralls.io/github/rwu823/delegate-to)
+[![version](https://img.shields.io/npm/v/delegate-to.svg?label=version)](https://www.npmjs.org/package/delegate-to) [![Build Status](https://img.shields.io/travis/rwu823/delegate-to.svg?branch=master)](https://travis-ci.org/rwu823/delegate-to/) [![codecov](https://img.shields.io/codecov/c/github/rwu823/delegate-to.svg)](https://codecov.io/github/rwu823/delegate-to)
 
 # delegate-to
 DOM Event delegate, it works great in React, too
