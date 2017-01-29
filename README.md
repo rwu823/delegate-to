@@ -42,8 +42,8 @@ componentDidMount() {
 ### Switch to `delegate-to`
 
 ```javascript
-document.body.addEventListener('click', delegate('.btn', e => {
-  console.log(e.delegateTarget)
+document.body.addEventListener('click', delegate('.btn', (ev, delegateTarget) => {
+  console.log(delegateTarget)
 }), false)
 ```
 
@@ -81,10 +81,15 @@ $ npm i --save delegate-to
 
 ```javascript
 import delegate from 'delegate-to'
-  
+
+
+handleClick = delegate('.btn', (ev, delegateTarget) => {
+
+})
+
 render () {
   <div>
-    <div onClick={delegate('.btn', this.handelClick)} />
+    <div onClick={this.handelClick} />
   </div>
 }
     

@@ -2,11 +2,11 @@ function matches(el, selector) {
   return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector)
 }
 
-function delegate (selector, dispatchEvent) {
+function delegate(selector, dispatchEvent) {
   const isStr = typeof selector === 'string'
 
-  return function(ev) {
-    let {target} = ev
+  return function (ev) {
+    let target = ev.target
 
     if (target === ev.currentTarget) {
       return
@@ -24,8 +24,8 @@ function delegate (selector, dispatchEvent) {
     }
 
     if (target) {
-      ev.delegateTarget = target
-      dispatchEvent.bind(this)(ev)
+      // ev.delegateTarget = target
+      dispatchEvent.bind(this)(ev, target)
     }
   }
 }

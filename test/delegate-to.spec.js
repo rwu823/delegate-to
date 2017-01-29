@@ -19,8 +19,8 @@ beforeEach(() => {
 
 it('delegate li, should output nothing', () => {
   let text
-  win['click-me'].addEventListener('click', delegate('li', e=> {
-    text = e.target.textContent.trim()
+  win['click-me'].addEventListener('click', delegate('li', ev=> {
+    text = ev.target.textContent.trim()
   }), false)
 
   win['click-me'].dispatchEvent(click)
@@ -32,8 +32,8 @@ it('delegate li, should output nothing', () => {
 
 it('delegate li, should output `item 1`', () => {
   let text
-  win['click-me'].addEventListener('click', delegate('#li1', e=> {
-    text = e.delegateTarget.textContent.trim()
+  win['click-me'].addEventListener('click', delegate('#li1', (ev, delegateTarget)=> {
+    text = delegateTarget.textContent.trim()
   }), false)
 
   win['li1'].dispatchEvent(click)
@@ -42,8 +42,8 @@ it('delegate li, should output `item 1`', () => {
 
 test('delegate li with custom condition, should output `item 1`', () => {
   let text
-  win['click-me'].addEventListener('click', delegate(target => target.id === 'li1', e=> {
-    text = e.delegateTarget.textContent.trim()
+  win['click-me'].addEventListener('click', delegate(target => target.id === 'li1', (ev, delegateTarget)=> {
+    text = delegateTarget.textContent.trim()
   }), false)
 
   win['li1'].dispatchEvent(click)
