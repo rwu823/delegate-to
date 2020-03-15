@@ -105,4 +105,4 @@ render () {
 
 ## Browsers Supported
 
-`delegate-to` use native `el.matchs` DOM API to match `CSS selector`, it works on **IE 9+** and All morden browsers, you can try custom match condition function if you need to work with old browsers.
+`delegate-to` use native `el.matchs` DOM API to match `CSS selector`, it works on **IE 9+** and All modern browsers, you can try custom match condition function if you need to work with old browsers.
